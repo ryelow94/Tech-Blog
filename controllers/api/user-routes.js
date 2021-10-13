@@ -1,8 +1,8 @@
-const router = require('express').Router(); 
 const session = require('express-session');
+const router = require('express').Router(); 
+const {User, Post, Comment} = require('../../models');
+const withAuth = require('../../utils/auth');
 
-const {User, Post, Comment} = require('../../models') 
-const withAuth = require('../../utils/auth') 
 
 router.get('/', (req,res)=> {
     User.findAll({
@@ -20,7 +20,7 @@ router.post("/", (req, res) => {
         username: req.body.username,
         password: req.body.password,
     }).then(dbUserData => {
-        req.session.save(()=> {
+        req.session.save(() => {
             req.session.user_id = dbUserData.id;
             req.session.username = dbUserData.username;
             req.session.loggedIn = true 
@@ -90,11 +90,11 @@ router.post('/login', (req,res) => {
             return;
         }
         req.session.save(()=> {
-            req.session.user_id = dbusUserData.id;
-            req.session.username =dbusUserData.username;
+            req.session.user_id = dbUserData.id;
+            req.session.username =dbUserData.username;
             req.session.loggedIn = true;
 
-            res.json({ user: dbusUserData, message: 'You have been logged in!'});
+            res.json({ user: dbUserData, message: 'You have been logged in!'});
         })
     })
 })

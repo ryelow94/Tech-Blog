@@ -1,34 +1,89 @@
-const path = require('path');
-const express = require('express');
-const session = require('express-session');
-const exphbs = require('express-handlebars');
-const helpers = require('./utils/helpers');
-const hbs = exphbs.create({helpers})
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+// const path = require('path');
+// const express = require('express');
+// const sequelize = require('./config/connection');
+// const routes = require('./controllers');
+// const exphbs = require('express-handlebars');
+// const helpers = require('./utils/helpers');
+// const hbs = exphbs.create({helpers})
+// const session = require('express-session');
+// const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
+
+// const app = express();
+// const PORT = process.env.PORT || 3001;
+
+// const sess = {
+//   secret: 'Super secret secret',
+//   cookie: {expire: 60000},
+//   resave: true,
+//   rolling: true,
+//   saveUninitialized: false,
+//   store: new SequelizeStore({
+//     db: sequelize,
+//   }),
+// };
+
+// app.use(session(sess));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.engine('handlebars', hbs.engine);
+// app.set('view engine', 'handlebars');
+// app.use(routes);
+// sequelize.sync({ force: false }).then(() => {
+//     app.listen(PORT, () => console.log('Now listening'));
+// }); 
+
+const express = require('express');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
-
+// Javascript Helpers
+const helpers = require('./utils/helpers');
+// Require Handlebars
+const exphbs = require('express-handlebars');
+const hbs = exphbs.create({ helpers });
+// Use path to target static files
+const path = require('path');
+// Use Environment port or 3001
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+// Create a Session
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sess = {
   secret: 'Super secret secret',
-  cookie: {maxAge: 3600},
-  resave: false,
-  saveUninitialized: true,
+  // Session expires after 5 minutes of inactivity
+  cookie: {expires: 60000000},
+  resave: true,
+  rolling: true,
+  saveUninitialized: false,
   store: new SequelizeStore({
-    db: sequelize,
+    db: sequelize
   }),
 };
-
 app.use(session(sess));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Set Handlebars
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+// Connect Static Files
+app.use(express.static(path.join(__dirname, 'public')));
+// Load Database
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// turn on routes
 app.use(routes);
+// turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log('Now listening'));
+  app.listen(PORT, () => console.log('Now listening'));
 });
+
+
+
+
+
+
+
+
+
+
+

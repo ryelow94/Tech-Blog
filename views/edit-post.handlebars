@@ -1,0 +1,17 @@
+<div class ="card">
+    <div class="card-content">
+        <div class="content">
+            <input value={{post.title}} class="title is-4" placeholder="Post Title" name="post-title" />
+            <div class="field">
+                <label class="label">Edit Post</label>
+            </div>
+            <div class="control">
+                <textarea name='post'class="textarea" placeholder="Post Here">{{post.post_text}}</textarea>
+            </div>
+            <button class="button has-text-success edit-post-btn">Save Post</button>
+        </div>
+    </div>
+    <button class='button has-text-danger delete-btn'>Delete Post</button>
+</div>
+<script src="/js/editPost.js"></script>
+<script src="/js/deletePost.js"></script>

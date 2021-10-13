@@ -1,0 +1,24 @@
+<button class='button has-text-success create-btn'>Create a new post!</button>
+
+{{#if posts.length}}
+<section>
+    <h2>Posts by you: </h2>
+    <ol>
+        {{#each posts as |post|}}
+        <li>
+            {{> post-info post}}
+            <a href="/dashboard/edit/{{post.id}}" class="btn btn-primary">Edit Post</a>
+        </li>
+        {{/each}}
+    </ol>
+</section>
+{{/if}}
+
+<script>
+    function navCreatePost(event) {
+        event.preventDefault();
+        document.location.replace('/dashboard/createPost')
+    }
+
+    document.querySelector('.create-btn').addEventListener('click', navCreatePost)
+</script>
