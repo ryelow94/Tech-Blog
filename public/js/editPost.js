@@ -5,9 +5,9 @@ const id = targetID.split('/')[3]
 async function editPostHandler(e) {
     e.preventDefault();
     
-    const title = document.querySelector('input[name="post-title"]').value;
-    const post_text = document.querySelector('textarea[name="post"]').value;
-    
+    const title = document.getElementsByName('post-title')[0].value;
+    const post_text = document.getElementsByName('post')[0].value;
+    console.log(title, post_text)
     const response = await fetch(`/api/posts/`+id, {
         method: 'PUT',
         body: JSON.stringify({
